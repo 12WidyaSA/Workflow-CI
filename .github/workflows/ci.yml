@@ -1,0 +1,31 @@
+name: CI MLflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run actions/checkout@v3
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.12.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12.7"
+
+      - name: Check Env
+        run: python --version
+
+      - name: Install dependencies
+        run: pip install mlflow==2.19.0 scikit-learn pandas numpy
+
+      - name: Run mlflow project
+        run: mlflow run MLProject --env-manager=local
+
+      - name: Get latest MLflow run_id
+        run: |
+          echo "Training completed!"
